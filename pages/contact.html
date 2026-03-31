@@ -63,47 +63,71 @@
         </div>
 
         <div>
-          <form class="contact-form" id="contactForm">
+          <form class="contact-form" id="contactForm" action="https://formsubmit.co/jonathan@sdvcommoditygroup.com" method="POST">
+            <!-- FormSubmit configuration -->
+            <input type="hidden" name="_subject" value="New Contact Form Submission - SDV Commodity Group">
+            <input type="hidden" name="_captcha" value="true">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_next" value="https://sdvcommoditygroup.com/pages/contact.html?sent=true">
+            <input type="text" name="_honey" style="display:none">
+
             <div class="form-row">
               <div class="form-group">
                 <label for="firstName">First Name</label>
-                <input type="text" id="firstName" name="firstName" required>
+                <input type="text" id="firstName" name="First Name" required>
               </div>
               <div class="form-group">
                 <label for="lastName">Last Name</label>
-                <input type="text" id="lastName" name="lastName" required>
+                <input type="text" id="lastName" name="Last Name" required>
               </div>
             </div>
 
             <div class="form-group">
               <label for="email">Email Address</label>
-              <input type="email" id="email" name="email" required>
+              <input type="email" id="email" name="Email" required>
             </div>
 
             <div class="form-group">
               <label for="organization">Organization</label>
-              <input type="text" id="organization" name="organization">
+              <input type="text" id="organization" name="Organization">
             </div>
 
             <div class="form-group">
               <label for="subject">Subject</label>
-              <select id="subject" name="subject">
+              <select id="subject" name="Subject">
                 <option value="">Select a subject</option>
-                <option value="quote">Request a Quote</option>
-                <option value="contract">Contract Opportunity</option>
-                <option value="teaming">Teaming / Partnership</option>
-                <option value="capability">Capability Statement Request</option>
-                <option value="general">General Inquiry</option>
+                <option value="Request a Quote">Request a Quote</option>
+                <option value="Contract Opportunity">Contract Opportunity</option>
+                <option value="Teaming / Partnership">Teaming / Partnership</option>
+                <option value="Capability Statement Request">Capability Statement Request</option>
+                <option value="General Inquiry">General Inquiry</option>
               </select>
             </div>
 
             <div class="form-group">
               <label for="message">Message</label>
-              <textarea id="message" name="message" placeholder="Tell us about your requirements..." required></textarea>
+              <textarea id="message" name="Message" placeholder="Tell us about your requirements..." required></textarea>
             </div>
 
             <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+
+            <div id="successMessage" style="display:none; margin-top: 16px; padding: 16px; background: rgba(40, 167, 69, 0.1); border: 1px solid rgba(40, 167, 69, 0.3); border-radius: 8px; color: #28a745; text-align: center;">
+              Thank you! Your message has been sent. We'll respond within one business day.
+            </div>
           </form>
+
+          <script>
+            // Show success message if redirected back after submission
+            if (window.location.search.includes('sent=true')) {
+              document.getElementById('contactForm').style.display = 'none';
+              var msg = document.getElementById('successMessage');
+              msg.style.display = 'block';
+              msg.parentElement.appendChild(msg);
+              // Show a cleaner success state
+              var formParent = document.getElementById('contactForm').parentElement;
+              formParent.innerHTML = '<div style="padding: 60px 20px; text-align: center;"><div style="font-size: 48px; margin-bottom: 16px;">&#10003;</div><h3 style="margin-bottom: 12px;">Message Sent Successfully</h3><p style="color: #94a3b8; margin-bottom: 24px;">Thank you for reaching out. We respond to all inquiries within one business day.</p><a href="contact.html" class="btn btn-primary">Send Another Message</a></div>';
+            }
+          </script>
         </div>
       </div>
     </div>
