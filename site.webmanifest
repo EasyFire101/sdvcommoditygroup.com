@@ -1,0 +1,21 @@
+{
+  "name": "SDV Commodity Group LLC",
+  "short_name": "SDV Group",
+  "description": "Service-Disabled Veteran-Owned Small Business providing federal supply chain solutions.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#0A1628",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}
