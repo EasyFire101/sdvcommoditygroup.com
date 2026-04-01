@@ -29,25 +29,4 @@ if (nav) {
   });
 }
 
-// Simple contact form handler
-const contactForm = document.getElementById('contactForm');
-if (contactForm) {
-  contactForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const formData = new FormData(contactForm);
-    const data = Object.fromEntries(formData);
-
-    // For now, show a confirmation message
-    const btn = contactForm.querySelector('.btn-primary');
-    btn.textContent = 'Message Sent!';
-    btn.style.background = '#1B7A2B';
-    btn.style.borderColor = '#1B7A2B';
-
-    setTimeout(() => {
-      btn.textContent = 'Send Message';
-      btn.style.background = '';
-      btn.style.borderColor = '';
-      contactForm.reset();
-    }, 3000);
-  });
-}
+// Contact form is handled by inline script on contact.html (Google Apps Script backend)
