@@ -63,13 +63,9 @@
         </div>
 
         <div>
-          <form class="contact-form" id="contactForm" action="https://formsubmit.co/jonathan@sdvcommoditygroup.com" method="POST">
-            <!-- FormSubmit configuration -->
-            <input type="hidden" name="_subject" value="New Contact Form Submission - SDV Commodity Group">
-            <input type="hidden" name="_captcha" value="true">
-            <input type="hidden" name="_template" value="table">
-            <input type="hidden" name="_next" value="https://sdvcommoditygroup.com/pages/contact.html?sent=true">
-            <input type="text" name="_honey" style="display:none">
+          <form class="contact-form" id="contactForm">
+            <!-- Honeypot for spam prevention -->
+            <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
 
             <div class="form-row">
               <div class="form-group">
@@ -109,24 +105,56 @@
               <textarea id="message" name="Message" placeholder="Tell us about your requirements..." required></textarea>
             </div>
 
-            <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+            <button type="submit" class="btn btn-primary" id="submitBtn" style="width: 100%;">Send Message</button>
 
-            <div id="successMessage" style="display:none; margin-top: 16px; padding: 16px; background: rgba(40, 167, 69, 0.1); border: 1px solid rgba(40, 167, 69, 0.3); border-radius: 8px; color: #28a745; text-align: center;">
-              Thank you! Your message has been sent. We'll respond within one business day.
-            </div>
+            <div id="formStatus" style="display:none; margin-top: 16px; padding: 16px; border-radius: 8px; text-align: center;"></div>
           </form>
 
           <script>
-            // Show success message if redirected back after submission
-            if (window.location.search.includes('sent=true')) {
-              document.getElementById('contactForm').style.display = 'none';
-              var msg = document.getElementById('successMessage');
-              msg.style.display = 'block';
-              msg.parentElement.appendChild(msg);
-              // Show a cleaner success state
-              var formParent = document.getElementById('contactForm').parentElement;
-              formParent.innerHTML = '<div style="padding: 60px 20px; text-align: center;"><div style="font-size: 48px; margin-bottom: 16px;">&#10003;</div><h3 style="margin-bottom: 12px;">Message Sent Successfully</h3><p style="color: #94a3b8; margin-bottom: 24px;">Thank you for reaching out. We respond to all inquiries within one business day.</p><a href="contact.html" class="btn btn-primary">Send Another Message</a></div>';
-            }
+            document.getElementById('contactForm').addEventListener('submit', function(e) {
+              e.preventDefault();
+
+              // Check honeypot
+              if (this._honey && this._honey.value) return;
+
+              var btn = document.getElementById('submitBtn');
+              var status = document.getElementById('formStatus');
+              btn.disabled = true;
+              btn.textContent = 'Sending...';
+              status.style.display = 'none';
+
+              var formData = new FormData(this);
+              var params = new URLSearchParams(formData).toString();
+
+              fetch('https://script.google.com/macros/s/AKfycbwoO9JiwNNMq_ompFB1qT2JnE4SL0y382ujqDkBAqEcdeXediVHYCiBzZo5a8hjHHoCxw/exec', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: params
+              })
+              .then(function(res) { return res.json(); })
+              .then(function(data) {
+                if (data.result === 'success') {
+                  document.getElementById('contactForm').parentElement.innerHTML = '<div style="padding: 60px 20px; text-align: center;"><div style="font-size: 48px; margin-bottom: 16px;">&#10003;</div><h3 style="margin-bottom: 12px;">Message Sent Successfully</h3><p style="color: #94a3b8; margin-bottom: 24px;">Thank you for reaching out. We respond to all inquiries within one business day.</p><a href="contact.html" class="btn btn-primary">Send Another Message</a></div>';
+                } else {
+                  status.style.display = 'block';
+                  status.style.background = 'rgba(220, 53, 69, 0.1)';
+                  status.style.border = '1px solid rgba(220, 53, 69, 0.3)';
+                  status.style.color = '#dc3545';
+                  status.textContent = 'Something went wrong. Please email us directly at jonathan@sdvcommoditygroup.com';
+                  btn.disabled = false;
+                  btn.textContent = 'Send Message';
+                }
+              })
+              .catch(function() {
+                status.style.display = 'block';
+                status.style.background = 'rgba(220, 53, 69, 0.1)';
+                status.style.border = '1px solid rgba(220, 53, 69, 0.3)';
+                status.style.color = '#dc3545';
+                status.textContent = 'Something went wrong. Please email us directly at jonathan@sdvcommoditygroup.com';
+                btn.disabled = false;
+                btn.textContent = 'Send Message';
+              });
+            });
           </script>
         </div>
       </div>
